@@ -19,7 +19,7 @@ const LoginForm: React.FC = () => {
         <CardTitle className="tracking-tight text-2xl font-bold text-center">
           Log in to BitBlogs
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-center">
           Enter your credentials to access your account
         </CardDescription>
       </CardHeader>
@@ -35,18 +35,18 @@ const LoginForm: React.FC = () => {
             <Input id="password" />
           </div>
         </div>
-        <Button className="mt-6">Log In</Button>
+        <Button className="mt-6 w-full">Log In</Button>
       </CardContent>
 
       <CardFooter>
-        <div className="flex justify-between ">
+        <div className="flex justify-between w-full">
           <div>
             <Link className="text-sm text-primary hover:underline" to="/">
               Forgot Password?
             </Link>
           </div>
           <div>
-            <span className="text-sm ">Dont have an account</span>
+            <span className="text-sm mx-3">Dont have an account</span>
             <Link className="text-primary hover:underline" to="/register">
               Sing Up
             </Link>

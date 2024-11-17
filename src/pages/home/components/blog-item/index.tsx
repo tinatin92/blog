@@ -1,19 +1,68 @@
-import {Button} from '@/components/ui/button'
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const BlogItem: React.FC =() => {
+type BlogItemProps = {
+  title: string;
+  author: string;
+  date: string;
+  readTime: string;
+  description: string;
+  imageUrl: string;
+  badges: string[];
+  link: string;
+};
 
+const BlogItem: React.FC<BlogItemProps> = ({
+  title,
+  author,
+  date,
+  readTime,
+  description,
+  imageUrl,
+  badges,
+  link,
+}) => {
+  const { t } = useTranslation();
+  console.log(t("lang-version"));
 
-     const handletheme = () =>{
-       const html = document.querySelector("html")
-       html?.classList.toggle("dark")
-     }
-   
+  return (
+    <Link to={link}>
+      {t("lang-version")}
+      <Card className="flex flex-col space-y-1.5 p-6 gap-y-8">
+        <div className="w-full">
+          <img
+            className="rounded-lg object-cover w-full h-[200px]"
+            src={imageUrl}
+            alt="shadcn"
+          />
+        </div>
+        <div>
+          <h2 className="tracking-tight text-2xl font-bold">{title}</h2>
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <Link className="hover:underline" to="">
+              {author}
+            </Link>
+            <span>•</span>
+            <span>{date}</span>
+            <span>•</span>
+            <span>{readTime}</span>
+          </div>
+        </div>
+        <div>
+          <p className="text-muted-foreground">{description}</p>
+        </div>
+        <div className="flex space-x-2 ">
+          {badges.map((badge, index) => (
+            <Link key={index} to="/search">
+              <Badge>{badge}</Badge>
+            </Link>
+          ))}
+        </div>
+      </Card>
+    </Link>
+  );
+};
 
-
-    return <div className="m-20">
-        <Button onClick={handletheme}>Toggle theme</Button>
-        <div className="w-160  bg-green rounded-lg"></div>
-    </div>
-}
-
-export default BlogItem
+export default BlogItem;

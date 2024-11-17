@@ -1,7 +1,7 @@
 
-import Registration from "../../components/registration-form"
+import RegistrationForm from "../../components/registration-form"
 const RegistrationPage :React.FC = () => {
-    return <Registration />
+    return <RegistrationForm />
 }
 
 export default RegistrationPage
