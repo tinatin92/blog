@@ -1,5 +1,9 @@
 import i18n from "i18next"
 import { /* useTranslation,  */initReactI18next } from "react-i18next";
+import homePageKa from './ka/pages/home.json'
+import homePageEn from './en/pages/home.json'
+import aboutPageKa from './ka/pages/home.json'
+import aboutPageEn from './en/pages/about.json'
 
 
 i18n
@@ -9,13 +13,17 @@ i18n
     resources: {
       en: {
         translation: {
-          "lang-version": "Welcome to React and react-i18next"
+          "home-page": homePageEn,
+          "about-page": aboutPageEn
         }
+        
       },
       ka: {
         translation: {
-            "lang-version":"კეთილი იყოს თქვენი მობრძანება რეაქტის კურსზე"
+          "home-page": homePageKa,
+          "about-page": aboutPageKa
         }
+    
       }
     },
     lng: "ka", 

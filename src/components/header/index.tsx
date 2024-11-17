@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { ModeToggle } from "../mode-toggle";
 import i18n from "i18next";
+import { Trans } from "react-i18next";
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,7 @@ const Header: React.FC = () => {
         <Container>
           <Link to="/">
             {" "}
-            <h1 className="font-bold text-2xl">BitBlogs</h1>
+            <h1 className="font-bold text-2xl"><Trans>home-page.logo</Trans></h1>
           </Link>
           <nav className="flex gap-3">
             <Link

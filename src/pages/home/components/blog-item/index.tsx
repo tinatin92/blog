@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 type BlogItemProps = {
   title: string;
@@ -29,7 +29,8 @@ const BlogItem: React.FC<BlogItemProps> = ({
 
   return (
     <Link to={link}>
-      {t("lang-version")}
+      {/* {t("home-page.lang-version")} */}
+      <Trans>home-page.lang-version</Trans>
       <Card className="flex flex-col space-y-1.5 p-6 gap-y-8">
         <div className="w-full">
           <img
