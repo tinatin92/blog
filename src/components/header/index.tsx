@@ -7,14 +7,14 @@ import i18n from "i18next";
 import { Trans } from "react-i18next";
 import {
   Command,
-  CommandDialog,
+  /* CommandDialog, */
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
+ /*  CommandShortcut, */
 } from "@/components/ui/command";
 
 const Header: React.FC = () => {
@@ -50,7 +50,7 @@ const Header: React.FC = () => {
             </Link>
             <Link
               className="text-muted-foreground hover:text-foreground"
-              to="/"
+              to="about"
             >
               About
             </Link>
