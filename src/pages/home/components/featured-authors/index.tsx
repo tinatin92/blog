@@ -18,7 +18,7 @@ const FeaturedAuthorsBox: React.FC = () => {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="flex flex-col gap-1">
-                <Link className="font-semibold hover:underline" to="">
+                <Link className="font-semibold hover:underline" to="author/1">
                   Alice Johnson
                 </Link>
                 <p className="text-sm text-muted-foreground">
@@ -34,7 +34,7 @@ const FeaturedAuthorsBox: React.FC = () => {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="flex flex-col gap-1">
-                <Link className="font-semibold hover:underline" to="">
+                <Link className="font-semibold hover:underline" to="author/1">
                   Alice Johnson
                 </Link>
                 <p className="text-sm text-muted-foreground">
@@ -50,7 +50,7 @@ const FeaturedAuthorsBox: React.FC = () => {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="flex flex-col gap-1">
-                <Link className="font-semibold hover:underline" to="">
+                <Link className="font-semibold hover:underline" to="author/1">
                   Alice Johnson
                 </Link>
                 <p className="text-sm text-muted-foreground">

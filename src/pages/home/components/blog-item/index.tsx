@@ -30,7 +30,7 @@ const BlogItem: React.FC<BlogItemProps> = ({
   return (
     <Link to={link}>
       {/* {t("home-page.lang-version")} */}
-      <Trans>home-page.lang-version</Trans>
+     {/*  <Trans>home-page.lang-version</Trans> */}
       <Card className="flex flex-col space-y-1.5 p-6 gap-y-8">
         <div className="w-full">
           <img
@@ -42,7 +42,7 @@ const BlogItem: React.FC<BlogItemProps> = ({
         <div>
           <h2 className="tracking-tight text-2xl font-bold">{title}</h2>
           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-            <Link className="hover:underline" to="">
+            <Link className="hover:underline" to="author/1">
               {author}
             </Link>
             <span>•</span>

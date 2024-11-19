@@ -10,12 +10,13 @@ type AboutAuthorProps = {
 
 const AboutAuthor: React.FC<AboutAuthorProps> = ({ title, text, skills }) => {
   return (
-    <Card>
-      <h1>{title}</h1>
+    <Card className='p-6 flex flex-col gap-6'>
+      <h1 className='font-semibold'>{title}</h1>
       <p>{text}</p>
       <div>
+        <h3 className='font-semibold mb-4'>Skills</h3>
         {skills.map((skill, index) => (
-          <Badge key={index} className="mr-2">
+          <Badge variant='secondary' key={index} className="mr-2">
             {skill}
           </Badge>
         ))}
