@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "run-db": "npx json-server database.json"
+    "run-db": "npx json-server database.json",
+    "generate-types": "supabase gen types typescript --project-id tzwkhotywvtddnvbbvzj --schema public > src/supabaseTypes.ts"
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^1.1.0",

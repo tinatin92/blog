@@ -10,8 +10,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { login } from '@/supabase/auth'
 
 const LoginForm: React.FC = () => {
+  const [loginPayload, setLoginPayload] = useState({email:'',password: ''})
+
+
+  const { mutate:handleLogin } = useMutation({
+    mutationKey:['login'],
+    mutationFn: login
+    
+  })
+
+  const handleSubmit = () => {
+  
+    if(!!loginPayload.email && !!loginPayload.password) {
+      handleLogin(loginPayload)
+    }
+  
+  }
+
+
+
+
+
   return (
    <div className="min-h-screen bg-background flex items-center justify-center">
      <Card className="w-160 ">
@@ -28,14 +52,24 @@ const LoginForm: React.FC = () => {
         <div>
           <div>
             <Label htmlFor="email">Your email</Label>
-            <Input id="email" />
+            <Input name="email" value={loginPayload.email} onChange={(e) => {
+              setLoginPayload({
+                email: e.target.value,
+                password: loginPayload.password
+              })
+            }} id="email" />
           </div>
           <div className="mt-5">
             <Label htmlFor="password">Your password</Label>
-            <Input id="password" />
+            <Input name="password" value={loginPayload.password} onChange={(e) => {
+              setLoginPayload({
+                email: loginPayload.email,
+                password: e.target.value
+              })
+            }} id="password" />
           </div>
         </div>
-        <Button className="mt-6 w-full">Log In</Button>
+        <Button onClick={handleSubmit} className="mt-6 w-full">Log In</Button>
       </CardContent>
 
       <CardFooter>

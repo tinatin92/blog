@@ -10,4 +10,6 @@ export const supabase = createClient<Database>(
 
 // supabase.from('')
 
+  
+
 
