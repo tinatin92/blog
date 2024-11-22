@@ -17,6 +17,13 @@ import {
  /*  CommandShortcut, */
 } from "@/components/ui/command";
 
+
+import { useMutation } from "@tanstack/react-query";
+import {  logout } from '@/supabase/auth'
+import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { useAtom } from "jotai";
+import { userAtom } from "@/store/auth";
+
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchIsOpen, setSearchIsOpen] = useState(false);
@@ -24,6 +31,13 @@ const Header: React.FC = () => {
     i18n.changeLanguage(lang);
     setIsOpen(false);
   };
+
+  const [user] = useAtom(userAtom)
+
+  const {mutate:handleLogout} = useMutation({
+    mutationKey: ['logout'],
+    mutationFn: logout
+  })
 
   return (
     <>
@@ -84,9 +98,32 @@ const Header: React.FC = () => {
                 </div>
               )}
             </div>
-            <Link to="login">
+
+          {!user &&    <Link to="login">
               <Button>Sing In</Button>
-            </Link>
+            </Link> }
+         
+            
+
+           
+            {user && ( 
+               <div className="flex items-center gap-6">
+               <Button onClick={() => handleLogout()}>Log out</Button>
+               <Link className="w-11 h-11" to='profile' >
+               <Avatar>
+                   <AvatarImage src="https://github.com/shadcn.png" />
+                   <AvatarFallback>CN</AvatarFallback>
+                 </Avatar>
+               </Link>
+               </div>
+            )}
+            
+
+            
+
+
+
+
             <div>
               <ModeToggle />
             </div>

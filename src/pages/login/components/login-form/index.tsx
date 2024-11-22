@@ -9,18 +9,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { login } from '@/supabase/auth'
 
 const LoginForm: React.FC = () => {
   const [loginPayload, setLoginPayload] = useState({email:'',password: ''})
+  const navigate = useNavigate()
 
 
   const { mutate:handleLogin } = useMutation({
     mutationKey:['login'],
-    mutationFn: login
+    mutationFn: login,
+    onSuccess: () => {
+      navigate('/')
+    }
     
   })
 
@@ -32,6 +36,8 @@ const LoginForm: React.FC = () => {
   
   }
 
+
+ 
 
 
 
