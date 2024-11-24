@@ -12,6 +12,9 @@
     "generate-types": "supabase gen types typescript --project-id tzwkhotywvtddnvbbvzj --schema public > src/supabaseTypes.ts"
   },
   "dependencies": {
+    "@dicebear/avatars": "^4.10.8",
+    "@dicebear/collection": "^9.2.2",
+    "@dicebear/core": "^9.2.2",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",

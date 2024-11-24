@@ -4,6 +4,6 @@ export type FilledProfileInfoPayload = {
     full_name_ka: string,
     avatar_url:string,
     phone:string,
-   
+    id: string;
     
 }
