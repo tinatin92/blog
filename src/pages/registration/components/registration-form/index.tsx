@@ -10,37 +10,33 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+
 import { useMutation } from "@tanstack/react-query";
-import { register } from '@/supabase/auth'
-
-
-
-
-
-
+import { register } from "@/supabase/auth";
+import { useTranslation } from "react-i18next";
+import { useForm } from "react-hook-form";
 
 const RegistrationForm: React.FC = () => {
-  const [registerPAyload, setRegisterPayload] = useState({email:'',password: ''})
 
-const { mutate:handleRegistration } = useMutation({
-  mutationKey:['register'],
-  mutationFn: register
-  
-})
-
-
-const handleSubmit = () => {
-  
-  if(!!registerPAyload.email && !!registerPAyload.password) {
-    handleRegistration(registerPAyload)
-  }
-
-
+  const { t } = useTranslation();
  
-}
 
+  const { register: formHookRegister, handleSubmit, formState } = useForm();
 
+  const { mutate: handleRegistration } = useMutation({
+    mutationKey: ["register"],
+    mutationFn: register,
+  });
+
+  // const handleSubmit = () => {
+  //   if (!!registerPAyload.email && !!registerPAyload.password) {
+  //     handleRegistration(registerPAyload);
+  //   }
+  // };
+  const onSubmit = (fildsValue: any) => {
+    console.log(fildsValue);
+    handleRegistration(fildsValue);
+  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
@@ -56,34 +52,59 @@ const handleSubmit = () => {
 
         <CardContent>
           <div className="flex flex-col gap-y-6">
-          {/*   <div>
+            {/*   <div>
               <Label htmlFor="name">Your Name</Label>
               <Input id="name" />
             </div> */}
             <div>
               <Label htmlFor="email">Your email</Label>
-              <Input value={registerPAyload.email} onChange={(e) => {
-                setRegisterPayload({
-                  email: e.target.value,
-                  password:registerPAyload.password
-                })
-              }} name="email" id="email" />
+              <Input
+                {...formHookRegister("email", {
+                  required: t("registration.required"),
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: t("registration.message"),
+                  },
+                })}
+              />
+               {formState.errors?.email?.message &&
+                typeof formState.errors.email.message === "string" && (
+                  <span className="text-red-500 text-sm">
+                    {formState.errors.email.message}
+                  </span>
+                )}
             </div>
             <div>
               <Label htmlFor="password">Your password</Label>
-              <Input value={registerPAyload.password} onChange={(e) => {
-                setRegisterPayload({
-                  email: registerPAyload.email,
-                  password: e.target.value
-                })
-              }} name="password" id="password" />
+              <Input
+                {...formHookRegister("password", {
+                  required: t("registration.required"),
+                  minLength: {
+                    value: 8,
+                    message: t("registration.minLength"),
+                  },
+                  maxLength: {
+                    value: 12,
+                    message: t("registration.maxLength"),
+                  },
+                })}
+              />
+              {formState.errors?.password?.message &&
+                typeof formState.errors.password.message === "string" && (
+                  <span className="text-red-500 text-sm">
+                    {formState.errors.password.message}
+                  </span>
+                )}
             </div>
-         {/*    <div>
+
+            {/*    <div>
               <Label htmlFor="password2">Confirme password</Label>
               <Input id="password2" />
             </div> */}
           </div>
-          <Button onClick={handleSubmit} className="mt-6 w-full">Sign Up</Button>
+          <Button onClick={handleSubmit(onSubmit)} className="mt-6 w-full">
+            Sign Up
+          </Button>
         </CardContent>
 
         <CardFooter>

@@ -1,0 +1,7 @@
+{
+    "label": "Your password",
+    "required": "Password is required!!!!!",
+    "minLength": "Password must be at least 8 characters long",
+    "maxLength": "Password cannot exceed 12 characters",
+    "message": "Email is not valid"
+  }
