@@ -1,10 +1,10 @@
-import React from "react";
+// import React ,{useEffect}from "react";
 import Container from "@/components/ui/container";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { FilledProfileInfoPayload } from "@/supabase/account/index.types";
+
+// import { FilledProfileInfoPayload } from "@/supabase/account/index.types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fillProfileInfo, getProfileInfo } from "@/supabase/account/index";
 import { userAtom } from "@/store/auth";
@@ -13,18 +13,15 @@ import { useAtom } from "jotai";
 import { createAvatar } from "@dicebear/core";
 import { avataaars } from "@dicebear/collection";
 
+import { useTranslation } from "react-i18next";
+import { useForm } from "react-hook-form";
+
 const Profile: React.FC = () => {
   const [user] = useAtom(userAtom);
+  const { t } = useTranslation();
+  const { register, handleSubmit, formState } = useForm();
 
-  const [profilePayload, setProfilePayload] =
-    useState<FilledProfileInfoPayload>({
-      full_name_en: "",
-      full_name_ka: "",
-      avatar_url: "",
-      phone: "",
-      username: "",
-      id: "",
-    });
+ 
 
   const {
     data: profileData,
@@ -33,6 +30,7 @@ const Profile: React.FC = () => {
   } = useQuery({
     queryKey: ["profileData"],
     queryFn: () => getProfileInfo(user?.user.id),
+    // onSuccess: (data) => reset(data),
   });
 
   const { mutate: handleFillProfile } = useMutation({
@@ -40,20 +38,20 @@ const Profile: React.FC = () => {
     mutationFn: fillProfileInfo,
   });
 
-  const handleSubmit = () => {
+  const onSubmit = (profilePayload: any) => {
+    console.log("Form Data:", profilePayload);
     const avatar = createAvatar(avataaars, {
       seed: "Felix",
     });
     const svg = avatar.toString();
 
     const payload = { ...profilePayload, avatar_url: svg, id: user?.user.id };
-
-    console.log("Payload to be sent:", payload);
+    console.log("Payload to be sent:", payload); 
 
     handleFillProfile(payload);
   };
 
-  console.log(profileData);
+
 
   {
     isLoading && <div>Loading...</div>;
@@ -61,6 +59,9 @@ const Profile: React.FC = () => {
   {
     error && <div>Sorry, Data cant be fetched!</div>;
   }
+
+
+ 
   return (
     <Container>
       <div className="flex flex-col w-full ">
@@ -69,8 +70,7 @@ const Profile: React.FC = () => {
             {profileData ? (
               <div className="flex flex-col gap-4">
                 <div className="w-11 h-11 rou">
-                {/* <div dangerouslySetInnerHTML={{ __html: svg }} /> */}
-
+                  {/* <div dangerouslySetInnerHTML={{ __html: svg }} /> */}
                 </div>
                 <div className="flex gap-3">
                   <div className="font-semibold text-sm color text-gray-800">
@@ -106,46 +106,34 @@ const Profile: React.FC = () => {
         <div className="w-1/3 m-auto">
           <div>
             <Label htmlFor="nameka">Name ka</Label>
-            <Input
-              name="nameka"
-              id="nameka"
-              value={profilePayload.full_name_ka}
-              onChange={(e) =>
-                setProfilePayload((prev) => ({
-                  ...prev,
-                  full_name_ka: e.target.value,
-                }))
-              }
-            />
+            <Input {...register("nameka", { required: t("profile.nameKa") })} />
+            {formState.errors?.nameka?.message &&
+                typeof formState.errors.nameka.message === "string" && (
+                  <span className="text-red-500 text-sm">
+                    {formState.errors.nameka.message}
+                  </span>
+                )}
           </div>
           <div>
             <Label htmlFor="nameen">Name en</Label>
-            <Input
-              name="nameen"
-              id="nameen"
-              value={profilePayload.full_name_en}
-              onChange={(e) =>
-                setProfilePayload((prev) => ({
-                  ...prev,
-                  full_name_en: e.target.value,
-                }))
-              }
-            />
+            <Input {...register("nameen", { required: t("profile.nameEn") })} />
+            {formState.errors?.nameen?.message &&
+                typeof formState.errors.nameen.message === "string" && (
+                  <span className="text-red-500 text-sm">
+                    {formState.errors.nameen.message}
+                  </span>
+                )}
           </div>
 
           <div>
             <Label htmlFor="username">Username</Label>
-            <Input
-              name="username"
-              id="username"
-              value={profilePayload.username}
-              onChange={(e) =>
-                setProfilePayload((prev) => ({
-                  ...prev,
-                  username: e.target.value,
-                }))
-              }
-            />
+            <Input {...register("username", { required: t("profile.userName") })} />
+            {formState.errors?.username?.message &&
+                typeof formState.errors.username.message === "string" && (
+                  <span className="text-red-500 text-sm">
+                    {formState.errors.username.message}
+                  </span>
+                )}
           </div>
 
           {/*     <div>
@@ -161,19 +149,17 @@ const Profile: React.FC = () => {
           </div> */}
           <div>
             <Label htmlFor="phone">phone</Label>
-            <Input
-              name="phone"
-              id="phone"
-              value={profilePayload.phone}
-              onChange={(e) =>
-                setProfilePayload((prev) => ({
-                  ...prev,
-                  phone: e.target.value,
-                }))
-              }
-            />
+            <Input {...register("phone", { required: t("profile.phone") })} />
+            {formState.errors?.phone?.message &&
+                typeof formState.errors.phone.message === "string" && (
+                  <span className="text-red-500 text-sm">
+                    {formState.errors.phone.message}
+                  </span>
+                )}
           </div>
-          <Button className="mt-4 w-full" onClick={handleSubmit}>Send</Button>
+          <Button className="mt-4 w-full" onClick={handleSubmit(onSubmit)}>
+            Send
+          </Button>
         </div>
       </div>
     </Container>

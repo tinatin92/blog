@@ -6,6 +6,10 @@ import aboutPageKa from "./ka/pages/about.json";
 import aboutPageEn from "./en/pages/about.json";
 import registrationEn from "./en/pages/registration.json";
 import registrationKa from "./ka/pages/registration.json";
+import profileKa from './ka/pages/profile.json'
+import profileEn from './en/pages/profile.json'
+import loginKa from './ka/pages/login.json'
+import loginEn from './en/pages/login.json'
 
 i18n
   .use(initReactI18next)
@@ -16,6 +20,8 @@ i18n
           "home-page": homePageEn,
           "about-page": aboutPageEn,
           "registration": registrationEn,
+          "profile":profileEn,
+          "login":loginEn
         },
       },
       ka: {
@@ -23,6 +29,8 @@ i18n
           "home-page": homePageKa,
           "about-page": aboutPageKa,
           "registration": registrationKa, 
+          "profile":profileKa,
+          "login":loginKa
         },
       },
     },
