@@ -66,7 +66,7 @@ const LoginForm: React.FC = () => {
                   </span>
                 )}
             </div>
-            <div className="mt-5">
+            <div className="mt-">
               <Label htmlFor="password">Your password</Label>
               <Input
                 {...register("password", {

@@ -55,6 +55,7 @@ const BlogItem: React.FC<BlogItemProps> = ({
           <p className="text-muted-foreground">{description}</p>
         </div>
         <div className="flex space-x-2 ">
+        <Badge>iojgioreio</Badge>
           {badges.map((badge, index) => (
             <Link key={index} to="/search">
               <Badge>{badge}</Badge>

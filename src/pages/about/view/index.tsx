@@ -7,18 +7,6 @@ import H1 from "@/components/ui/h1";
 import StoryCard from "../components/our-story";
 import JoinUS from "../components/join-us";
 
-
-
-
-
-
-
-
-
-
-
-
-
 const aboutPageTitle = {
   title: "About bitBlogs",
   text: "Empowering tech enthusiasts to share knowledge and inspire innovation.",
@@ -49,18 +37,15 @@ const AboutCardData = [
   },
 ];
 
-
 const StoryCardData = {
-    title:'Our Story',
-    text:'Founded in 2023, bitBlogs started as a small project by a group of passionate developers who wanted to create a space for sharing their experiences and learning from others. What began as a simple blog quickly grew into a thriving community of tech enthusiasts from all around the world.'
-}
-
+  title: "Our Story",
+  text: "Founded in 2023, bitBlogs started as a small project by a group of passionate developers who wanted to create a space for sharing their experiences and learning from others. What began as a simple blog quickly grew into a thriving community of tech enthusiasts from all around the world.",
+};
 
 const JoinUSData = {
-    title: 'Join Us on Our Journey',
-    text: 'Whether youre a seasoned developer, a curious beginner, or somewhere in between, theres a place for you at bitBlogs. Lets shape the future of technology together.',
-
-}
+  title: "Join Us on Our Journey",
+  text: "Whether youre a seasoned developer, a curious beginner, or somewhere in between, theres a place for you at bitBlogs. Lets shape the future of technology together.",
+};
 const AboutPage: React.FC = () => {
   return (
     <Container>
@@ -68,7 +53,7 @@ const AboutPage: React.FC = () => {
         <Title {...aboutPageTitle} />
         <OurMission {...OurMissionData} />
         <section className="mt-11">
-         <H1  title="What We Offer"/>
+          <H1 title="What We Offer" />
           <div className="flex gap-5 mt-6">
             {AboutCardData.map((cardData) => {
               return <AboutCard {...cardData} />;
@@ -76,7 +61,7 @@ const AboutPage: React.FC = () => {
           </div>
         </section>
         <StoryCard {...StoryCardData} />
-        <JoinUS {...JoinUSData}/>
+        <JoinUS {...JoinUSData} />
       </div>
     </Container>
   );

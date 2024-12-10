@@ -2,10 +2,10 @@ import FeaturedAuthorsBox from "../../components/featured-authors";
 import TagBox from "../../components/tag-box";
 import BlogItem from "../../components/blog-item";
 import Container from "@/components/ui/container";
-// import { blogData } from "@/pages/home/data/blogItemData";
-import { useEffect, useState } from "react";
+import { blogData } from "@/pages/home/data/blogItemData";
+// import { useEffect, useState } from "react";
 
-import { getBlogItem } from "@/api/blog";
+// import { getBlogItem } from "@/api/blog";
 
 
 type BlogItem = {
@@ -22,14 +22,14 @@ type BlogItem = {
 
 
 const HomePage: React.FC = () => {
-  const [blogData, setBlogData] = useState<BlogItem[]>([])
+  // const [blogData, setBlogData] = useState<BlogItem[]>([])
   
 
-useEffect(() => {
-  getBlogItem().then((blog) => {
-    setBlogData(blog)
-  })
-},[])
+// useEffect(() => {
+//   getBlogItem().then((blog) => {
+//     setBlogData(blog)
+//   })
+// },[])
 
   return (
     <>
