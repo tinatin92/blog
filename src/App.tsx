@@ -12,6 +12,7 @@ import AuthGuard from "./components/route-guards/auth";
 import { useAtom } from "jotai";
 import { userAtom } from "./store/auth";
 import BlogPage from "./pages/write/view";
+import BlogView from "./pages/blog/view";
 
 function App() {
 /*   const [, setSession] = useState<any>(null) */
@@ -44,6 +45,7 @@ function App() {
         <Route path="about" element={<AboutPage />} />
         <Route path="write" element={<BlogPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="blogs" element={<BlogView />} />
         <Route path="author/:1d" element={<AuthorPage />} />
       </Route>
     </Routes>
