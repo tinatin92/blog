@@ -58,7 +58,7 @@ const Header: React.FC = () => {
             </Link>
             <Link
               className="text-muted-foreground hover:text-foreground"
-              to="/"
+              to="write"
             >
               Write
             </Link>

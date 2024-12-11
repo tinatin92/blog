@@ -11,6 +11,7 @@ import { supabase } from "./supabase";
 import AuthGuard from "./components/route-guards/auth";
 import { useAtom } from "jotai";
 import { userAtom } from "./store/auth";
+import BlogPage from "./pages/write/view";
 
 function App() {
 /*   const [, setSession] = useState<any>(null) */
@@ -41,6 +42,7 @@ function App() {
         <Route path="register" element={  <AuthGuard ><RegistrationPage /> </AuthGuard>} />
         <Route path="login" element={ <AuthGuard><LoginPage /> </AuthGuard>} />
         <Route path="about" element={<AboutPage />} />
+        <Route path="write" element={<BlogPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="author/:1d" element={<AuthorPage />} />
       </Route>

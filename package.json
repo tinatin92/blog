@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "run-db": "npx json-server database.json",
-    "generate-types": "supabase gen types typescript --project-id tzwkhotywvtddnvbbvzj --schema public > src/supabaseTypes.ts"
+    "generate-types": "supabase gen types typescript --project-id qkrpdrootnnjahkxpkuy --schema public > src/supabase/supabase.types.ts"
   },
   "dependencies": {
     "@dicebear/avatars": "^4.10.8",
@@ -53,7 +53,7 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
     "postcss": "^8.4.49",
-    "supabase": ">=1.8.1",
+    "supabase": "^2.0.0",
     "tailwindcss": "^3.4.15",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0",
