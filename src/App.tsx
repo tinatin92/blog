@@ -14,9 +14,12 @@ import { userAtom } from "./store/auth";
 import BlogPage from "./pages/write/view";
 import BlogView from "./pages/blog/view";
 
+
+
 function App() {
 /*   const [, setSession] = useState<any>(null) */
   const [, setUser] = useAtom(userAtom)
+ 
   
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
