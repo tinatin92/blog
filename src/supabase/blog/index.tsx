@@ -23,7 +23,9 @@ export const getSearchedBlogInfo = async (title: string) => {
     const { data, error } = await supabase
       .from("blogs")
       .select("*")
-      .ilike("title_en", `%${title}%`);
+      .or(
+        `title_en.ilike.%${title}%,title_ka.ilike.%${title}%`
+      );
 
     if (error) {
       throw error;

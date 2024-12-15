@@ -3,66 +3,73 @@ import { getBlogInfo, getSearchedBlogInfo } from "@/supabase/blog";
 import { useQuery } from "@tanstack/react-query";
 import BlogBox from "../components/blogItem";
 // import { Button } from "@/components/ui/button";
-import { useEffect, useCallback } from "react";
-import qs from 'qs'
+import { useEffect } from "react";
+import qs from "qs";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { useSearchParams } from "react-router-dom";
-import underscore from 'underscore'
+
+import { useDebounce } from "@uidotdev/usehooks";
+import { formatCreatedAt } from '@/utils/formatCreatedAt'
+
 
 type BlogFilterFormData = {
   title: string;
 };
 const FormDataDEfaultValues = {
-  title: ""
+  title: "",
 };
-type QueryParams = Record<string, string | undefined>;
 
 
 const BlogView: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const parsedQueryParams = {...FormDataDEfaultValues,...qs.parse(searchParams.toString())}
+  const parsedQueryParams = {
+    ...FormDataDEfaultValues,
+    ...qs.parse(searchParams.toString()),
+  };
 
-  const { control,  watch } = useForm<BlogFilterFormData>({
+  const { control, watch } = useForm<BlogFilterFormData>({
     defaultValues: parsedQueryParams,
   });
- 
-
 
   // const onSubmit = (formValue: BlogFilterFormData) => {
   //   setSearchParams(qs.stringify(formValue));
   // };
 
+   // const debouncedSetSearchParams = useCallback(
+  //   underscore.debounce((updatedParams: QueryParams) => {
+  //     setSearchParams(qs.stringify(updatedParams));
+  //   }, 500),
 
-  const watchedSearchText = watch('title')
+  //   [setSearchParams]
+  // );
 
-  const debouncedSetSearchParams = useCallback(
+  const watchedSearchText = watch("title");
 
-    underscore.debounce((updatedParams:QueryParams) => {
-      setSearchParams(qs.stringify(updatedParams));
-    }, 500), 
+  const debouncedSearchText = useDebounce(watchedSearchText, 500)
 
-    [setSearchParams]
-  );
 
   useEffect(() => {
     const currentParams = qs.parse(searchParams.toString());
-    const updatedParams = { ...currentParams, title: watchedSearchText };
+    const updatedParams = { ...currentParams, title: debouncedSearchText };
 
-    debouncedSetSearchParams(updatedParams);
-  }, [watchedSearchText, setSearchParams, debouncedSetSearchParams]);
+    setSearchParams(qs.stringify(updatedParams));
+  }, [debouncedSearchText, setSearchParams]);
 
-  const { data: blogData, isLoading, error } = useQuery({
-    queryKey: ["blogData", searchParams.toString()], 
+
+  const {
+    data: blogData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["blogData", searchParams.toString()],
     queryFn: () => {
-      const title = searchParams.get("title") || ""; 
+      const title = searchParams.get("title") || "";
       return title ? getSearchedBlogInfo(title) : getBlogInfo();
     },
-    
   });
-
-
+  
 
   {
     isLoading && <div>Loading...</div>;
@@ -73,6 +80,8 @@ const BlogView: React.FC = () => {
 
   const supabaseImageUrl = import.meta.env
     .VITE_SUPABASE_BLOG_IMAGES_STORAGE_URL;
+
+
 
   return (
     <>
@@ -96,10 +105,11 @@ const BlogView: React.FC = () => {
               const blogImageUrl = blog?.image_url
                 ? `${supabaseImageUrl}/${blog.image_url}`
                 : null;
-
+              const formattedDate = formatCreatedAt(blog.created_at ?? "");
               return (
                 <BlogBox
                   key={blog.id}
+                  created_at={formattedDate}
                   title_ka={blog.title_ka ?? ""}
                   title_en={blog.title_en ?? ""}
                   description_ka={blog.description_ka ?? ""}

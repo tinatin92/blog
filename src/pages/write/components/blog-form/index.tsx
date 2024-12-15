@@ -8,6 +8,7 @@ import { supabase } from "@/supabase";
 import { useAtom } from "jotai";
 import { userAtom } from "@/store/auth";
 import { Link } from "react-router-dom";
+import { createTimestamp } from '@/utils/timestamp'
 
 
 
@@ -17,6 +18,7 @@ type BlogFormData = {
   description_ka: string;
   description_en: string;
   image_file: null | File;
+  created_at: string
 };
 const FormDataDEfaultValues = {
   title_ka: "",
@@ -24,7 +26,10 @@ const FormDataDEfaultValues = {
   description_ka: "",
   description_en: "",
   image_file: null,
+  created_at:""
 };
+
+
 
 const Blog: React.FC = () => {
   const [user] = useAtom(userAtom);
@@ -35,6 +40,9 @@ const Blog: React.FC = () => {
  
 
   const onSubmit = (formValues: BlogFormData) => {
+    
+    const timestamp = createTimestamp();
+
     if (formValues.image_file) {
       supabase.storage
         .from("blog_images")
@@ -47,6 +55,7 @@ const Blog: React.FC = () => {
             description_en: formValues.description_en,
             image_url: res.data?.fullPath,
             user_id: user?.user?.id,
+            created_at: timestamp,
           });
         })
         .then((res) => {
