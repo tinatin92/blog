@@ -4,13 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useForm, Controller } from "react-hook-form";
-import { supabase } from "@/supabase";
 import { useAtom } from "jotai";
 import { userAtom } from "@/store/auth";
 import { Link } from "react-router-dom";
-import { createTimestamp } from '@/utils/timestamp'
 
-
+import { useCreateBlogMutation } from "@/react-query/mutation/blogs";
 
 type BlogFormData = {
   title_ka: string;
@@ -18,54 +16,55 @@ type BlogFormData = {
   description_ka: string;
   description_en: string;
   image_file: null | File;
-  created_at: string
+  created_at: string;
 };
+
 const FormDataDEfaultValues = {
   title_ka: "",
   title_en: "",
   description_ka: "",
   description_en: "",
   image_file: null,
-  created_at:""
+  created_at: "",
 };
-
-
 
 const Blog: React.FC = () => {
   const [user] = useAtom(userAtom);
-  const { control, handleSubmit } = useForm<BlogFormData>({
+
+  const { control, handleSubmit, reset } = useForm<BlogFormData>({
     defaultValues: FormDataDEfaultValues,
   });
   const [successMessage, setSuccessMessage] = useState("");
- 
+
+  const { mutate, isPending, isError } = useCreateBlogMutation({
+    queryOptions: {
+      onSuccess: () => {
+        setSuccessMessage("Blog created successfully!");
+        reset();
+      },
+      onError: (err) => {
+        console.error("Error creating blog:", err);
+      },
+    },
+  });
 
   const onSubmit = (formValues: BlogFormData) => {
-    
-    const timestamp = createTimestamp();
+   
+    const formDataWithUser = {
+      ...formValues,
+      user_id: user?.id,
+    };
 
-    if (formValues.image_file) {
-      supabase.storage
-        .from("blog_images")
-        .upload(formValues?.image_file?.name, formValues?.image_file)
-        .then((res) => {
-          return supabase.from("blogs").insert({
-            title_ka: formValues.title_ka,
-            title_en: formValues.title_en,
-            description_ka: formValues.description_ka,
-            description_en: formValues.description_en,
-            image_url: res.data?.fullPath,
-            user_id: user?.user?.id,
-            created_at: timestamp,
-          });
-        })
-        .then((res) => {
-          console.log("successfully created blog", res);
-        });
-      setSuccessMessage("Blog created successfully!");
-    }
-
-    console.log("make blog", formValues);
+    mutate(formDataWithUser);
   };
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error while creating the blog. Please try again later.</div>;
+  }
 
   return (
     <>
@@ -79,10 +78,14 @@ const Blog: React.FC = () => {
                   {successMessage}
                 </div>
                 <div className="flex gap-1 mt-3 justify-center">
-                    <div className="font-semibold">You can see it on</div>
-                    <Link className="underline font-semibold text-blue-800" to="/blogs">Blogs Page</Link>
+                  <div className="font-semibold">You can see it on</div>
+                  <Link
+                    className="underline font-semibold text-blue-800"
+                    to="/blogs"
+                  >
+                    Blogs Page
+                  </Link>
                 </div>
-              
               </div>
             )}
             <div>
@@ -90,9 +93,9 @@ const Blog: React.FC = () => {
               <Controller
                 control={control}
                 name="title_ka"
-                render={({ field: { onChange, value } }) => {
-                  return <Input onChange={onChange} value={value} />;
-                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input onChange={onChange} value={value} />
+                )}
               />
             </div>
 
@@ -101,9 +104,9 @@ const Blog: React.FC = () => {
               <Controller
                 control={control}
                 name="title_en"
-                render={({ field: { onChange, value } }) => {
-                  return <Input onChange={onChange} value={value} />;
-                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input onChange={onChange} value={value} />
+                )}
               />
             </div>
 
@@ -112,9 +115,9 @@ const Blog: React.FC = () => {
               <Controller
                 control={control}
                 name="description_ka"
-                render={({ field: { onChange, value } }) => {
-                  return <Input onChange={onChange} value={value} />;
-                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input onChange={onChange} value={value} />
+                )}
               />
             </div>
 
@@ -123,9 +126,9 @@ const Blog: React.FC = () => {
               <Controller
                 control={control}
                 name="description_en"
-                render={({ field: { onChange, value } }) => {
-                  return <Input onChange={onChange} value={value} />;
-                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input onChange={onChange} value={value} />
+                )}
               />
             </div>
 
@@ -134,26 +137,23 @@ const Blog: React.FC = () => {
               <Controller
                 control={control}
                 name="image_file"
-                render={({ field: { onChange } }) => {
-                  return (
-                    <Input
-                      type="file"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        onChange(file);
-                      }}
-                      placeholder="File"
-                    />
-                  );
-                }}
+                render={({ field: { onChange } }) => (
+                  <Input
+                    type="file"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      onChange(file);
+                    }}
+                    placeholder="File"
+                  />
+                )}
               />
             </div>
 
-            <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+            <Button onClick={handleSubmit(onSubmit)}>send</Button>
           </div>
         </div>
       </Container>
-      <Container></Container>
     </>
   );
 };

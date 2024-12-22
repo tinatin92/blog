@@ -1,6 +1,6 @@
 import Container from "@/components/ui/container";
 import { getBlogInfo, getSearchedBlogInfo } from "@/supabase/blog";
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import BlogBox from "../components/blogItem";
 // import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { useSearchParams } from "react-router-dom";
 
 import { useDebounce } from "@uidotdev/usehooks";
-import { formatCreatedAt } from '@/utils/formatCreatedAt'
-
+import { formatCreatedAt } from "@/utils/formatCreatedAt";
+import { useGetBlogs } from "@/react-query/query/blogs";
 
 type BlogFilterFormData = {
   title: string;
@@ -19,7 +19,6 @@ type BlogFilterFormData = {
 const FormDataDEfaultValues = {
   title: "",
 };
-
 
 const BlogView: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,22 +32,9 @@ const BlogView: React.FC = () => {
     defaultValues: parsedQueryParams,
   });
 
-  // const onSubmit = (formValue: BlogFilterFormData) => {
-  //   setSearchParams(qs.stringify(formValue));
-  // };
-
-   // const debouncedSetSearchParams = useCallback(
-  //   underscore.debounce((updatedParams: QueryParams) => {
-  //     setSearchParams(qs.stringify(updatedParams));
-  //   }, 500),
-
-  //   [setSearchParams]
-  // );
-
   const watchedSearchText = watch("title");
 
-  const debouncedSearchText = useDebounce(watchedSearchText, 500)
-
+  const debouncedSearchText = useDebounce(watchedSearchText, 500);
 
   useEffect(() => {
     const currentParams = qs.parse(searchParams.toString());
@@ -57,19 +43,14 @@ const BlogView: React.FC = () => {
     setSearchParams(qs.stringify(updatedParams));
   }, [debouncedSearchText, setSearchParams]);
 
-
+  const title = searchParams.get("title") || "";
   const {
     data: blogData,
     isLoading,
     error,
-  } = useQuery({
-    queryKey: ["blogData", searchParams.toString()],
-    queryFn: () => {
-      const title = searchParams.get("title") || "";
-      return title ? getSearchedBlogInfo(title) : getBlogInfo();
-    },
+  } = useGetBlogs({
+    title,
   });
-  
 
   {
     isLoading && <div>Loading...</div>;
@@ -80,8 +61,6 @@ const BlogView: React.FC = () => {
 
   const supabaseImageUrl = import.meta.env
     .VITE_SUPABASE_BLOG_IMAGES_STORAGE_URL;
-
-
 
   return (
     <>
